@@ -1,2 +1,7 @@
 # Project exclude paths
 /target/
+/.idea/
+/NCTaskManager.iml
+/src/test/
+/readme_img/
+/README.md
