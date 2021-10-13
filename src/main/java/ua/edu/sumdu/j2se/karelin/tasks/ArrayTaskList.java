@@ -2,7 +2,7 @@ package ua.edu.sumdu.j2se.karelin.tasks;
 
 public class ArrayTaskList {
 
-    Task[] taskMass = new Task[10]; //розмір масиву задач "за замовчуванням".
+    private Task[] taskMass = new Task[10]; //розмір масиву задач "за замовчуванням".
 
     public ArrayTaskList(Task[] taskMass) {
         this.taskMass = taskMass;
@@ -98,14 +98,13 @@ public class ArrayTaskList {
         int id = 0;
         for (Task t : taskMass) {
             if (t == null) break;
-            if (t.isActive()) {             //шукаємо в активних задачах
-                int timeRun = t.nextTimeAfter(from);
-                if ((timeRun <= to) && (timeRun != -1)) {
-                    temp[id] = t;
-                    id++;
-                }
+            int timeRun = t.nextTimeAfter(from);      //шукаємо серед задач час виконання
+            if ((timeRun <= to) && (timeRun != -1)) {
+                temp[id] = t;
+                id++;
             }
         }
+
         return new ArrayTaskList(temp);
     }
 
