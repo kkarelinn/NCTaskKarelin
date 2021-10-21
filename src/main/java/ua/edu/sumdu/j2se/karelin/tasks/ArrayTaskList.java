@@ -19,7 +19,7 @@ public class ArrayTaskList {
      */
     public void add(Task task) throws Exception {
         if (task == null) {
-            throw new Exception("Невірна задача");
+            throw new IllegalArgumentException();
         }
         int size = taskMass.length;
         for (int i = 0; i < size; i++) {       //шукаємо вільне місце для нової задачі
@@ -49,6 +49,7 @@ public class ArrayTaskList {
                 for (int j = i + 1; j < size; j++) {
                     taskMass[j - 1] = taskMass[j];
                 }
+                taskMass[size-1] = null;
                 return true;
             }
         }
@@ -79,7 +80,7 @@ public class ArrayTaskList {
      */
     public Task getTask(int index) throws Exception {
         if (index < 0 || index > size() - 1) {
-            throw new Exception("невірний номер задачі");
+            throw new IndexOutOfBoundsException ("невірний номер задачі");
         }
         return taskMass[index];
     }
@@ -92,7 +93,7 @@ public class ArrayTaskList {
      */
     public ArrayTaskList incoming(int from, int to) throws Exception {
         if (from < 0 || from > to || taskMass == null){
-            throw new Exception("Щось пішло не так");
+            throw new IllegalArgumentException("Щось пішло не так");
         }
         Task[] temp = new Task[size()];     //новий масив для зберігання задач, запланованих в інтервалі
         int id = 0;

@@ -21,9 +21,9 @@ public class Task {
      * @param title - назва
      * @param time - момент виконання
      */
-    public Task(String title, int time) throws Exception {
+    public Task(String title, int time) throws IllegalArgumentException {
         if (title.length() == 0 || time < 0) {
-            throw new Exception("Неверное значение аргумента");
+            throw new IllegalArgumentException();
         }
         this.title = title;
         this.time = time;
@@ -37,9 +37,9 @@ public class Task {
      * @param end - кінець інтервалу
      * @param interval - інтервал
      */
-    public Task(String title, int start, int end, int interval) throws Exception {
+    public Task(String title, int start, int end, int interval) throws IllegalArgumentException {
         if (title.length() == 0 || start < 0 || end < start || interval > (end - start)) {
-            throw new Exception("Неверное значение аргумента");
+            throw new IllegalArgumentException("Неверное значение аргумента");
         }
         this.title = title;
         this.start = start;
@@ -97,7 +97,7 @@ public class Task {
      */
     public void setTime(int time) throws Exception {
         if (time < 0) {
-            throw new Exception("Неверное значение аргумента");
+            throw new IllegalArgumentException("Неверное значение аргумента");
         }
         this.time = time;
         if (isRepeated()) {
@@ -140,7 +140,7 @@ public class Task {
      */
     public void setTime(int start, int end, int interval) throws Exception {
         if (interval < 0 || start < 0 || start > end || interval > (end - start)) {
-            throw new Exception("Неверное значение аргумента");
+            throw new IllegalArgumentException("Неверное значение аргумента");
         }
         if (!isRepeated()) {
             this.time = 0;
