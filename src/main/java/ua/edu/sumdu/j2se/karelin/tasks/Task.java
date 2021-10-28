@@ -18,8 +18,9 @@ public class Task {
 
     /**
      * Створення нового об'єкту одиночної задачі
+     *
      * @param title - назва
-     * @param time - момент виконання
+     * @param time  - момент виконання
      */
     public Task(String title, int time) throws IllegalArgumentException {
         if (title.length() == 0 || time < 0) {
@@ -27,14 +28,14 @@ public class Task {
         }
         this.title = title;
         this.time = time;
-
     }
 
     /**
      * Створення нового об'єкту повторюваної задачі
-     * @param title - назва
-     * @param start - початок інтервалу
-     * @param end - кінець інтервалу
+     *
+     * @param title    - назва
+     * @param start    - початок інтервалу
+     * @param end      - кінець інтервалу
      * @param interval - інтервал
      */
     public Task(String title, int start, int end, int interval) throws IllegalArgumentException {
@@ -49,15 +50,17 @@ public class Task {
 
     /**
      * Метод отримання назви
-     * @return  String - назва задачі
+     *
+     * @return String - назва задачі
      */
     public String getTitle() {
-       return title;
+        return title;
     }
 
     /**
      * Метод встановлення назви
-     * @param   title - встановлює назву задачі типу String, якщо параметр не пустий
+     *
+     * @param title - встановлює назву задачі типу String, якщо параметр не пустий
      */
     public void setTitle(String title) throws Exception {
         if (title.length() == 0) {
@@ -68,7 +71,8 @@ public class Task {
 
     /**
      * Метод виявлення активності задачі
-     * @return  boolean - "true" - активна, інакше - "false"
+     *
+     * @return boolean - "true" - активна, інакше - "false"
      */
     public boolean isActive() {
         return isActive;
@@ -76,7 +80,8 @@ public class Task {
 
     /**
      * Метод активації задачі
-     * @param   active (boolean)
+     *
+     * @param active (boolean)
      */
     public void setActive(boolean active) {
         this.isActive = active;
@@ -84,7 +89,8 @@ public class Task {
 
     /**
      * Метод зчитування часу виконнання задачі
-     * @return  int - час одиночної задачі, або початок інтервалу повторюваної задачі
+     *
+     * @return int - час одиночної задачі, або початок інтервалу повторюваної задачі
      */
     public int getTime() {
         return (!isRepeated()) ? time : start;
@@ -93,7 +99,8 @@ public class Task {
     /**
      * Метод встановлення часу виконання одиночної задачі
      * та перетворення повторюваної на одиночну
-     * @param   time (int) - момент виконання, при умові, що він не відємний
+     *
+     * @param time (int) - момент виконання, при умові, що він не відємний
      */
     public void setTime(int time) throws Exception {
         if (time < 0) {
@@ -109,7 +116,8 @@ public class Task {
 
     /**
      * Метод зчитування часу початку задачі
-     * @return  int - початок інтервалу, або часу задачі
+     *
+     * @return int - початок інтервалу, або часу задачі
      */
     public int getStartTime() {
         return (isRepeated()) ? start : time;
@@ -117,7 +125,8 @@ public class Task {
 
     /**
      * Метод зчитування часу кінця інтервалу задачі
-     * @return  int - кінец інтервалу,  або час задачі
+     *
+     * @return int - кінец інтервалу,  або час задачі
      */
     public int getEndTime() {
         return (isRepeated()) ? end : time;
@@ -125,7 +134,8 @@ public class Task {
 
     /**
      * Метод зчитування інтервалу задачі
-     * @return  int - інтервал, або 0 - якщо немає повторів
+     *
+     * @return int - інтервал, або 0 - якщо немає повторів
      */
     public int getRepeatInterval() {
         return (isRepeated()) ? interval : 0;
@@ -133,10 +143,11 @@ public class Task {
 
     /**
      * Метод визначення початку, кінця і інтервалу повторюваної задачі
-     * @param start - початок інтервалу
-     * @param end - кінець інтервалу
+     *
+     * @param start    - початок інтервалу
+     * @param end      - кінець інтервалу
      * @param interval - інтервал
-     * встановлює параметри, за умови невідємних величин часу, наявності проміжку, та інтервалу
+     *                 встановлює параметри, за умови невідємних величин часу, наявності проміжку, та інтервалу
      */
     public void setTime(int start, int end, int interval) throws Exception {
         if (interval < 0 || start < 0 || start > end || interval > (end - start)) {
@@ -152,14 +163,16 @@ public class Task {
 
     /**
      * Метод зчитування типу задачі
-     * @return  boolean - повертає true, якщо повторювана
+     *
+     * @return boolean - повертає true, якщо повторювана
      */
     public boolean isRepeated() {
-        return (start > 0 && start < end) && ((end - start) / interval) > 1 ;
+        return (start > 0 && start < end) && ((end - start) / interval) > 1;
     }
 
     /**
      * Метод знаходження наступного моменту виконання задачі після заданого часу
+     *
      * @param current - поточний час
      * @return - int - час виконання найближчої задачі
      * якщо задача неактивна, або після заданого часу не виконується, return -1

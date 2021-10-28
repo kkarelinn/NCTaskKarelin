@@ -1,12 +1,13 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
-public class ArrayTaskList {
+public class ArrayTaskList extends AbstractTaskList {
 
     private Task[] taskMass = new Task[10]; //розмір масиву задач "за замовчуванням".
 
     public ArrayTaskList(Task[] taskMass) {
         this.taskMass = taskMass;
     }
+
     public ArrayTaskList() {
         super();
     }
@@ -17,7 +18,8 @@ public class ArrayTaskList {
      * @param task - нова задача
      * @throws Exception - виключення, якщо задачу не передали в метод
      */
-    public void add(Task task) throws Exception {
+    @Override
+    public void add(Task task) throws IllegalArgumentException {
         if (task == null) {
             throw new IllegalArgumentException();
         }
@@ -41,6 +43,7 @@ public class ArrayTaskList {
      * @param task - передана задача для видалення
      * @return - true (успішне видалення), інакше false.
      */
+    @Override
     public boolean remove(Task task) {
         int size = taskMass.length;
         for (int i = 0; i < size; i++) {
@@ -49,7 +52,7 @@ public class ArrayTaskList {
                 for (int j = i + 1; j < size; j++) {
                     taskMass[j - 1] = taskMass[j];
                 }
-                taskMass[size-1] = null;
+                taskMass[size - 1] = null;
                 return true;
             }
         }
@@ -61,6 +64,7 @@ public class ArrayTaskList {
      *
      * @return - int
      */
+    @Override
     public int size() {
         int s = 0;
         for (Task temp : taskMass) {
@@ -78,37 +82,12 @@ public class ArrayTaskList {
      * @return - Task задача потрібного номеру
      * @throws Exception - номер поза можливим інтервалом
      */
-    public Task getTask(int index) throws Exception {
+    @Override
+    public Task getTask(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index > size() - 1) {
-            throw new IndexOutOfBoundsException ("невірний номер задачі");
+            throw new IndexOutOfBoundsException("невірний номер задачі");
         }
         return taskMass[index];
     }
-
-    /**
-     * Метод для створення списку запланованих до виконанння зада в заданий проміжок часу
-     * @param from - початок інтервалу
-     * @param to - кінець інтервалу
-     * @return - обьєкт ArrayTaskList зі масивом запланованих задач
-     */
-    public ArrayTaskList incoming(int from, int to) throws Exception {
-        if (from < 0 || from > to || taskMass == null){
-            throw new IllegalArgumentException("Щось пішло не так");
-        }
-        Task[] temp = new Task[size()];     //новий масив для зберігання задач, запланованих в інтервалі
-        int id = 0;
-        for (Task t : taskMass) {
-            if (t == null) break;
-            int timeRun = t.nextTimeAfter(from);      //шукаємо серед задач час виконання
-            if ((timeRun <= to) && (timeRun != -1)) {
-                temp[id] = t;
-                id++;
-            }
-        }
-
-        return new ArrayTaskList(temp);
-    }
-
-
 }
 

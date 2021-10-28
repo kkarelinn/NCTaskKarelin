@@ -1,6 +1,6 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
-public class LinkedTaskList {
+public class LinkedTaskList extends AbstractTaskList {
     private int sizeList;
     private Node headNode;
     private Node finalNode;
@@ -23,8 +23,9 @@ public class LinkedTaskList {
      * Додавання нової не пустої задачі в масив задач
      *
      * @param task - нова задача
-     * @throws Exception - виключення, якщо задачу не передали в метод
+     * @throws IllegalArgumentException - виключення, якщо задачу не передали в метод
      */
+    @Override
     public void add(Task task) throws IllegalArgumentException {
         if (task == null) {
             throw new IllegalArgumentException();
@@ -48,6 +49,7 @@ public class LinkedTaskList {
      * @param task - передана задача для видалення
      * @return - true (успішне видалення), інакше false.
      */
+    @Override
     public boolean remove(Task task) {
 
         Node rmv = searchNode(task);    //шукаємо потрібний Нод
@@ -87,6 +89,7 @@ public class LinkedTaskList {
      *
      * @return - int
      */
+    @Override
     public int size() {
         return sizeList;
     }
@@ -96,8 +99,9 @@ public class LinkedTaskList {
      *
      * @param index - переданий номер задачі
      * @return - Task задача потрібного номеру
-     * @throws Exception - номер поза можливим інтервалом
+     * @throws IndexOutOfBoundsException - номер поза можливим інтервалом
      */
+    @Override
     public Task getTask(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index > size() - 1) {
             throw new IndexOutOfBoundsException("невірний номер задачі");
@@ -109,29 +113,6 @@ public class LinkedTaskList {
             step++;
         }
         return currentNode.getTask();
-    }
-
-    /**
-     * Метод для створення списку запланованих до виконанння зада в заданий проміжок часу
-     *
-     * @param from - початок інтервалу
-     * @param to   - кінець інтервалу
-     * @return - обьєкт ArrayTaskList зі масивом запланованих задач
-     */
-    public LinkedTaskList incoming(int from, int to) throws IllegalArgumentException {
-        if (from < 0 || from > to || headNode == null) {
-            throw new IllegalArgumentException("Щось пішло не так");
-        }
-        LinkedTaskList list = new LinkedTaskList();
-        Node currentNode = headNode;
-        while (currentNode != null) {       //перевіряємо задачу кожного Ноду на відповіднісь часу
-            int timeRun = currentNode.getTask().nextTimeAfter(from);
-            if ((timeRun <= to) && (timeRun != -1)) {
-                list.add(currentNode.getTask());        //додаємо у список
-            }
-            currentNode = currentNode.getNext();
-        }
-        return list;
     }
 
     private static class Node {
@@ -178,7 +159,7 @@ public class LinkedTaskList {
         }
 
         public boolean hasPrevNode() {
-           return (this.prev != null);
+            return (this.prev != null);
         }
 
         public boolean isLastNode() {
@@ -202,7 +183,7 @@ public class LinkedTaskList {
     /*
      * ДОдаткові функції для LinkedTaskList
      */
-    public Node searchNode(Task task) {         //пошук Ноду за назвою задачі
+    private Node searchNode(Task task) {         //пошук Ноду за назвою задачі
         Node currentNode = headNode;
         while (currentNode != null) {
             if (currentNode.getTask().equals(task)) {
