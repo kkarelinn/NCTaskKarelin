@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
+import java.util.Objects;
+
 /**
  * Класс Task реалізує додаток, для роботи з запланованими задачами
  * на певний проміжок часу
@@ -7,7 +9,7 @@ package ua.edu.sumdu.j2se.karelin.tasks;
  * @author Andrii Karelin
  * @version 1.0
  */
-public class Task {
+public class Task implements Cloneable{
 
     private String title;
     private int time;           //час виконання одиночної задачі
@@ -29,6 +31,14 @@ public class Task {
         this.title = title;
         this.time = time;
     }
+    public Task(String title, int time, boolean acivate) throws IllegalArgumentException {
+        if (title.length() == 0 || time < 0) {
+            throw new IllegalArgumentException();
+        }
+        this.title = title;
+        this.time = time;
+        this.isActive = acivate;
+    }
 
     /**
      * Створення нового об'єкту повторюваної задачі
@@ -39,7 +49,7 @@ public class Task {
      * @param interval - інтервал
      */
     public Task(String title, int start, int end, int interval) throws IllegalArgumentException {
-        if (title.length() == 0 || start < 0 || end < start || interval > (end - start)) {
+        if (title.length() == 0 || start < 0 || end < start || interval > (end - start) || interval <= 0) {
             throw new IllegalArgumentException("Неверное значение аргумента");
         }
         this.title = title;
@@ -102,7 +112,7 @@ public class Task {
      *
      * @param time (int) - момент виконання, при умові, що він не відємний
      */
-    public void setTime(int time) throws Exception {
+    public void setTime(int time) throws IllegalArgumentException {
         if (time < 0) {
             throw new IllegalArgumentException("Неверное значение аргумента");
         }
@@ -149,7 +159,7 @@ public class Task {
      * @param interval - інтервал
      *                 встановлює параметри, за умови невідємних величин часу, наявності проміжку, та інтервалу
      */
-    public void setTime(int start, int end, int interval) throws Exception {
+    public void setTime(int start, int end, int interval) throws IllegalArgumentException {
         if (interval < 0 || start < 0 || start > end || interval > (end - start)) {
             throw new IllegalArgumentException("Неверное значение аргумента");
         }
@@ -196,5 +206,35 @@ public class Task {
             }
         }
         return -1;
+    }
+
+    @Override
+    public Task clone() throws CloneNotSupportedException {
+        return (Task) super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "\"" + title + "\"" +
+                ", time:" + time +
+                ", startInt:" + start +
+                ", endInt:" + end +
+                ", int:" + interval +
+                ((isActive) ? ", ACTIVE" : ", no active") +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return time == task.time && start == task.start && end == task.end && interval == task.interval && isActive == task.isActive && title.equals(task.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, time, start, end, interval, isActive);
     }
 }

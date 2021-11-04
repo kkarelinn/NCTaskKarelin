@@ -1,6 +1,14 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
-public abstract class AbstractTaskList {
+import java.util.Iterator;
+
+public abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
+    @Override
+    public AbstractTaskList clone() throws CloneNotSupportedException {
+        AbstractTaskList clone = TaskListFactory.createTaskList(getType()).clone();
+        return clone;
+    }
+
     abstract void add(Task task) throws IllegalArgumentException;
 
     abstract boolean remove(Task task);
@@ -8,6 +16,8 @@ public abstract class AbstractTaskList {
     abstract int size();
 
     abstract Task getTask(int index) throws IndexOutOfBoundsException;
+
+    abstract ListTypes.types getType();
 
     /**
      * Метод для створення списку запланованих до виконанння задач в заданий проміжок часу
@@ -21,13 +31,9 @@ public abstract class AbstractTaskList {
             throw new IllegalArgumentException("Щось пішло не так");
         }
 
-        //визначаємо тип списку, та встановлюємо відповідний тип ENUM
-        ListTypes.types type = (this instanceof ArrayTaskList) ? ListTypes.types.ARRAY : ListTypes.types.LINKED;
-
-        AbstractTaskList list = TaskListFactory.createTaskList(type);
+        AbstractTaskList list = TaskListFactory.createTaskList(getType());
         for (int i = 0; i < size(); i++) {
             Task t = this.getTask(i);
-            if (t == null) break;
             int timeRun = t.nextTimeAfter(from);      //шукаємо серед задач час виконання
             if ((timeRun <= to) && (timeRun != -1)) {
                 list.add(t);
@@ -35,5 +41,25 @@ public abstract class AbstractTaskList {
         }
         return list;
     }
+
+
+    public String toString() {
+        Iterator<Task> it = iterator();
+        if (!it.hasNext())
+            return "[]";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append(this.getClass().getSimpleName() + " [");
+        while (it.hasNext()) {
+            Task t = it.next();
+            sb.append(t.toString());
+            if (!it.hasNext())
+                return sb.append(']').toString();
+            sb.append(", ");
+        }
+        return sb.toString();
+    }
+
+
 }
 
