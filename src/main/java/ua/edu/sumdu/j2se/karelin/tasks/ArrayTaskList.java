@@ -1,6 +1,8 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
-public class ArrayTaskList extends AbstractTaskList {
+import java.util.Iterator;
+
+public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, Cloneable {
 
     private Task[] taskMass = new Task[10]; //розмір масиву задач "за замовчуванням".
 
@@ -9,7 +11,7 @@ public class ArrayTaskList extends AbstractTaskList {
     }
 
     public ArrayTaskList() {
-        super();
+
     }
 
     /**
@@ -45,7 +47,7 @@ public class ArrayTaskList extends AbstractTaskList {
      */
     @Override
     public boolean remove(Task task) {
-        int size = taskMass.length;
+        int size = size();
         for (int i = 0; i < size; i++) {
             if (taskMass[i].getTitle().equals(task.getTitle())) {
                 taskMass[i] = null;
@@ -88,6 +90,75 @@ public class ArrayTaskList extends AbstractTaskList {
             throw new IndexOutOfBoundsException("невірний номер задачі");
         }
         return taskMass[index];
+    }
+
+    @Override
+    ListTypes.types getType() {
+        return ListTypes.types.ARRAY;
+    }
+
+    @Override
+    public Iterator<Task> iterator() {
+
+        return new Iterator<Task>() {
+            private int currId = 0;   //индекс элемента для next()
+            private int lastId = -1;    //Индекс элемента, предыдущего next().
+
+            @Override
+            public boolean hasNext() {
+                return currId < size() && getTask(currId) != null;
+            }
+
+            @Override
+            public Task next() {
+                lastId = currId++;
+                return getTask(lastId);
+            }
+
+            @Override
+            public void remove() {
+                if (lastId == -1) throw new IllegalStateException();
+                ArrayTaskList.this.remove(getTask(lastId));
+                currId--;
+                lastId = -1;
+            }
+        };
+    }
+
+    @Override
+    public ArrayTaskList clone() throws CloneNotSupportedException {
+        ArrayTaskList clone = new ArrayTaskList();
+        for (Task t : this) {
+            clone.add(t.clone());
+        }
+        return clone;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ArrayTaskList tasks = (ArrayTaskList) o;
+
+        int length = tasks.size();
+        if (size() != length) return false;
+
+        for (int i = 0; i < length; i++) {
+            if (!taskMass[i].equals(tasks.taskMass[i]))
+                return false;
+        }
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        if (taskMass == null)
+            return 0;
+        int result = 1;
+        for (Task t : taskMass)
+            result = 31 * result + (t == null ? 0 : t.hashCode());
+        return result;
     }
 }
 
