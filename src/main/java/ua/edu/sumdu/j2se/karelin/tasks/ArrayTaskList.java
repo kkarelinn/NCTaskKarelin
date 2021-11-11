@@ -1,24 +1,40 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, Cloneable {
 
     private Task[] taskMass = new Task[10]; //розмір масиву задач "за замовчуванням".
+    private int sizeList;
 
     public ArrayTaskList(Task[] taskMass) {
         this.taskMass = taskMass;
+        setActSize();
     }
 
     public ArrayTaskList() {
 
     }
 
+    @Override
+    public ArrayTaskList clone() throws CloneNotSupportedException {
+        ArrayTaskList listClone = (ArrayTaskList) super.clone();
+        listClone.taskMass = new Task[10];
+        listClone.setActSize();
+
+        for (Task t : this) {
+            listClone.add(t.clone());
+        }
+        return listClone;
+    }
+
     /**
      * Додавання нової не пустої задачі в масив задач
      *
      * @param task - нова задача
-     * @throws Exception - виключення, якщо задачу не передали в метод
+     * @throws IllegalArgumentException - виключення, якщо задачу не передали в метод
      */
     @Override
     public void add(Task task) throws IllegalArgumentException {
@@ -37,6 +53,7 @@ public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, C
                 break;
             }
         }
+        sizeList++;
     }
 
     /**
@@ -49,16 +66,25 @@ public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, C
     public boolean remove(Task task) {
         int size = size();
         for (int i = 0; i < size; i++) {
-            if (taskMass[i].getTitle().equals(task.getTitle())) {
+            if (taskMass[i].equals(task)) {
                 taskMass[i] = null;
-                for (int j = i + 1; j < size; j++) {
-                    taskMass[j - 1] = taskMass[j];
-                }
+                if (size - (i + 1) >= 0) System.arraycopy(taskMass, i + 1, taskMass, i + 1 - 1, size - (i + 1));
                 taskMass[size - 1] = null;
+                sizeList--;
                 return true;
             }
         }
         return false;
+    }
+
+    public void setActSize() {
+        int s = 0;
+        for (Task temp : taskMass) {
+            if (temp != null) {
+                s++;
+            }
+        }
+        sizeList = s;
     }
 
     /**
@@ -68,13 +94,7 @@ public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, C
      */
     @Override
     public int size() {
-        int s = 0;
-        for (Task temp : taskMass) {
-            if (temp != null) {
-                s++;
-            }
-        }
-        return s;
+        return sizeList;
     }
 
     /**
@@ -82,7 +102,7 @@ public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, C
      *
      * @param index - переданий номер задачі
      * @return - Task задача потрібного номеру
-     * @throws Exception - номер поза можливим інтервалом
+     * @throws IndexOutOfBoundsException - номер поза можливим інтервалом
      */
     @Override
     public Task getTask(int index) throws IndexOutOfBoundsException {
@@ -104,6 +124,7 @@ public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, C
             private int currId = 0;   //индекс элемента для next()
             private int lastId = -1;    //Индекс элемента, предыдущего next().
 
+
             @Override
             public boolean hasNext() {
                 return currId < size() && getTask(currId) != null;
@@ -117,21 +138,12 @@ public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, C
 
             @Override
             public void remove() {
-                if (lastId == -1) throw new IllegalStateException();
+                if (lastId == -1) throw new IllegalStateException("Не был вызван метод next()");
                 ArrayTaskList.this.remove(getTask(lastId));
                 currId--;
                 lastId = -1;
             }
         };
-    }
-
-    @Override
-    public ArrayTaskList clone() throws CloneNotSupportedException {
-        ArrayTaskList clone = new ArrayTaskList();
-        for (Task t : this) {
-            clone.add(t.clone());
-        }
-        return clone;
     }
 
     @Override
@@ -159,6 +171,16 @@ public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, C
         for (Task t : taskMass)
             result = 31 * result + (t == null ? 0 : t.hashCode());
         return result;
+    }
+
+    @Override
+    public Stream<Task> getStream() {
+        Task[] tempMass = new Task[size()];
+        for (int i = 0; i < size(); i++) {
+            tempMass[i] = getTask(i);
+        }
+        return Stream.of(tempMass);
+
     }
 }
 
