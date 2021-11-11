@@ -9,7 +9,7 @@ import java.util.Objects;
  * @author Andrii Karelin
  * @version 1.0
  */
-public class Task implements Cloneable{
+public class Task implements Cloneable {
 
     private String title;
     private int time;           //час виконання одиночної задачі
@@ -31,6 +31,7 @@ public class Task implements Cloneable{
         this.title = title;
         this.time = time;
     }
+
     public Task(String title, int time, boolean acivate) throws IllegalArgumentException {
         if (title.length() == 0 || time < 0) {
             throw new IllegalArgumentException();
@@ -230,11 +231,19 @@ public class Task implements Cloneable{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Task task = (Task) o;
-        return time == task.time && start == task.start && end == task.end && interval == task.interval && isActive == task.isActive && title.equals(task.title);
+        // isActive - не учитываем
+        return time == task.time && start == task.start && end == task.end && interval == task.interval && title.equals(task.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, time, start, end, interval, isActive);
+        int result = 1;
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + time;
+        result = 31 * result + start;
+        result = 31 * result + end;
+        result = 31 * result + (isActive ? 1 : 0);
+        return result;
+        //  return Objects.hash(title, time, start, end, interval);
     }
 }

@@ -1,11 +1,29 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 public class LinkedTaskList extends AbstractTaskList implements Iterable<Task>, Cloneable {
     private int sizeList;
     private Node headNode;
     private Node finalNode;
+
+    @Override
+    public LinkedTaskList clone() throws CloneNotSupportedException {
+        LinkedTaskList listClone = (LinkedTaskList) super.clone();
+        Iterator<Task> origIt = this.iterator();
+        Iterator<Task> cloneIt = listClone.iterator();
+
+        while (cloneIt.hasNext()) {
+            cloneIt.next();
+            cloneIt.remove();
+        }
+        while (origIt.hasNext()) {
+            listClone.add(origIt.next().clone());
+        }
+        return listClone;
+    }
 
     public LinkedTaskList() {
     }
@@ -141,20 +159,11 @@ public class LinkedTaskList extends AbstractTaskList implements Iterable<Task>, 
 
             @Override
             public void remove() {
-                if (lastNode == null) throw new IllegalStateException();
+                if (lastNode == null) throw new IllegalStateException("Не был вызван метод next()");
                 LinkedTaskList.this.remove(lastNode.task);
                 lastNode = null;    //--
             }
         };
-    }
-
-    @Override
-    public LinkedTaskList clone() throws CloneNotSupportedException {
-        LinkedTaskList clone = new LinkedTaskList();
-        for (Task t : this) {
-            clone.add(t.clone());
-        }
-        return clone;
     }
 
     @Override
@@ -179,13 +188,35 @@ public class LinkedTaskList extends AbstractTaskList implements Iterable<Task>, 
     public int hashCode() {
         if (headNode == null) return 0;
         int result = 1;
-        Iterator<Task> it = iterator();
-        while (it.hasNext()) {
-            Task t = it.next();
+        for (Task t : this) {
             result = 31 * result + (t == null ? 0 : t.hashCode());
         }
         return result;
 
+    }
+
+    /*
+     * ДОдаткові функції для LinkedTaskList
+     */
+    private Node searchNode(Task task) {         //пошук Ноду за назвою задачі
+        Node currentNode = headNode;
+        while (currentNode != null) {
+            if (currentNode.getTask().equals(task)) {
+                return currentNode;
+            }
+            currentNode = currentNode.getNext();
+        }
+        return null;
+    }
+
+    @Override
+    public Stream<Task> getStream() {
+        Task[] tempMass = new Task[size()];
+        Iterator<Task> it = iterator();
+        for (int i = 0; i < size() && it.hasNext(); i++) {
+            tempMass[i] = it.next();
+        }
+        return Arrays.stream(tempMass);
     }
 
     private static class Node {
@@ -250,20 +281,8 @@ public class LinkedTaskList extends AbstractTaskList implements Iterable<Task>, 
         public boolean isOnlyOneNode() {
             return (!this.hasNextNode() && !this.hasPrevNode());
         }
-    }
 
-    /*
-     * ДОдаткові функції для LinkedTaskList
-     */
-    private Node searchNode(Task task) {         //пошук Ноду за назвою задачі
-        Node currentNode = headNode;
-        while (currentNode != null) {
-            if (currentNode.getTask().getTitle().equals(task.getTitle())) {
-                return currentNode;
-            }
-            currentNode = currentNode.getNext();
-        }
-        return null;
+
     }
 
 
