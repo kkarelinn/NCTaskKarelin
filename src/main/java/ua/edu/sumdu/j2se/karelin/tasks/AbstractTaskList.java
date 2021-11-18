@@ -1,12 +1,14 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
+import java.time.LocalDateTime;
 import java.util.Iterator;
+import java.util.Objects;
 import java.util.stream.Stream;
 
-public abstract class AbstractTaskList implements Iterable<Task> , Cloneable{
+public abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
 
-    public AbstractTaskList clone () throws CloneNotSupportedException{
-        return (AbstractTaskList)super.clone();
+    public AbstractTaskList clone() throws CloneNotSupportedException {
+        return (AbstractTaskList) super.clone();
     }
 
     abstract void add(Task task) throws IllegalArgumentException;
@@ -28,23 +30,21 @@ public abstract class AbstractTaskList implements Iterable<Task> , Cloneable{
      * @param to   - кінець інтервалу
      * @return - обьєкт ArrayTaskList зі масивом запланованих задач
      */
-    public final AbstractTaskList incoming(int from, int to) throws IllegalArgumentException {
-        if (from < 0 || from > to || this.size() == 0) {
-            throw new IllegalArgumentException("Щось пішло не так");
+    public final AbstractTaskList incoming(LocalDateTime from, LocalDateTime to) throws IllegalArgumentException {
+        if (from == null || from.isAfter(to) || this.size() == 0) {
+            throw new IllegalArgumentException("Wrong arguments");
         }
 
         AbstractTaskList list = TaskListFactory.createTaskList(getType());
 
         //Stream API
-        assert list != null;
-        this.getStream().filter((t) ->
-                t.nextTimeAfter(from) <= to && t.nextTimeAfter(from) != -1).forEach(list::add);
-
+        this.getStream().filter((t) -> t.nextTimeAfter(from) != null &&
+                (t.nextTimeAfter(from).compareTo(to)) <= 0).forEach(Objects.requireNonNull(list)::add);
         // без Stream API
-       /* for (int i = 0; i < size(); i++) {
+     /*   for (int i = 0; i < size(); i++) {
             Task t = this.getTask(i);
-            int timeRun = t.nextTimeAfter(from);      //шукаємо серед задач час виконання
-            if ((timeRun <= to) && (timeRun != -1)) {
+            LocalDateTime timeRun = t.nextTimeAfter(from);      //шукаємо серед задач час виконання
+            if ((timeRun != null) && (timeRun.isBefore(to))) {
                 list.add(t);
             }
         }*/
@@ -59,6 +59,7 @@ public abstract class AbstractTaskList implements Iterable<Task> , Cloneable{
         StringBuilder sb = new StringBuilder();
         sb.append(this.getClass().getSimpleName()).append(" [");
         while (it.hasNext()) {
+            sb.append("\n");
             Task t = it.next();
             sb.append(t.toString());
             if (!it.hasNext())
