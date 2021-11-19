@@ -1,8 +1,8 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 public class LinkedTaskList extends AbstractTaskList implements Iterable<Task>, Cloneable {
     private int sizeList;
@@ -141,7 +141,7 @@ public class LinkedTaskList extends AbstractTaskList implements Iterable<Task>, 
     @Override
     public Iterator<Task> iterator() {
 
-        return new Iterator<Task>() {
+        return new Iterator<>() {
             private Node currNode = headNode;   //индекс элемента для next()
             private Node lastNode = null;    //Индекс элемента, предыдущего next().
 
@@ -211,12 +211,7 @@ public class LinkedTaskList extends AbstractTaskList implements Iterable<Task>, 
 
     @Override
     public Stream<Task> getStream() {
-        Task[] tempMass = new Task[size()];
-        Iterator<Task> it = iterator();
-        for (int i = 0; i < size() && it.hasNext(); i++) {
-            tempMass[i] = it.next();
-        }
-        return Arrays.stream(tempMass);
+        return StreamSupport.stream(this.spliterator(), false);
     }
 
     private static class Node {

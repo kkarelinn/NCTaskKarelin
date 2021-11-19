@@ -1,6 +1,5 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
-import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
@@ -14,9 +13,7 @@ public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, C
         setActSize();
     }
 
-    public ArrayTaskList() {
-
-    }
+    public ArrayTaskList() {}
 
     @Override
     public ArrayTaskList clone() throws CloneNotSupportedException {
@@ -120,14 +117,13 @@ public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, C
     @Override
     public Iterator<Task> iterator() {
 
-        return new Iterator<Task>() {
+        return new Iterator<>() {
             private int currId = 0;   //индекс элемента для next()
             private int lastId = -1;    //Индекс элемента, предыдущего next().
 
-
             @Override
             public boolean hasNext() {
-                return currId < size() && getTask(currId) != null;
+                return currId < size();
             }
 
             @Override
@@ -175,11 +171,7 @@ public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, C
 
     @Override
     public Stream<Task> getStream() {
-        Task[] tempMass = new Task[size()];
-        for (int i = 0; i < size(); i++) {
-            tempMass[i] = getTask(i);
-        }
-        return Stream.of(tempMass);
+        return Stream.of(taskMass).limit(size());
 
     }
 }
