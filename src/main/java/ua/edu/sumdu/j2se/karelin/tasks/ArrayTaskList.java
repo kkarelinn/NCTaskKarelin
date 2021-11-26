@@ -1,9 +1,10 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, Cloneable {
+public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, Cloneable, Serializable {
 
     private Task[] taskMass = new Task[10]; //розмір масиву задач "за замовчуванням".
     private int sizeList;

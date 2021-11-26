@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
@@ -52,17 +54,18 @@ public class Main {
 //        System.out.println(task2nc.hashCode());
 
         /*  Проверка hashCode(), equals(), clone() СПИСКОВ*/
-        Task task2 = new Task("second", LocalDateTime.now().plusDays(20), LocalDateTime.now().plusDays(20).plusSeconds(10), 5);
+        Task task2 = new Task("second", LocalDateTime.now().plusDays(20), LocalDateTime.now().plusDays(30).plusSeconds(10), 5);
         task2.setActive(true);
         //Task task3 = new Task("third", LocalDateTime.now().plusDays(30), true);
         Task task3 = task1.clone();
-        task3.setTitle("Третья задача");
+        task3.setTitle("привет");
 
 
         AbstractTaskList listArray = new LinkedTaskList();
         listArray.add(task1);
         listArray.add(task2);
         listArray.add(task3);
+
 
       /*  AbstractTaskList clone = listArray.clone();
         System.out.println("клоны списков одинаковые ? : " + listArray.equals(clone));
@@ -93,21 +96,73 @@ public class Main {
 
         listArray.getStream().forEach(System.out::println);
         System.out.println("-------");*/
-        System.out.println("---работа со списком итератор и МАР");
+      /*  System.out.println("---работа со списком итератор и МАР");
         System.out.println("список предстоящих задач");
+        Iterable<Task> iterable = Tasks.incoming(listArray,LocalDateTime.now().plusDays(5), LocalDateTime.now().plusDays(100));
+        AbstractTaskList list = (AbstractTaskList) Tasks.incoming(listArray,LocalDateTime.now().plusDays(5), LocalDateTime.now().plusDays(100));
+        System.out.println(iterable);
+    //    System.out.println(list);
+        Map<LocalDateTime, Set<Task>> map = Tasks.calendar(listArray,LocalDateTime.now().plusDays(5), LocalDateTime.now().plusDays(100));*/
 
-        Map<LocalDateTime, Set<Task>> map = Tasks.calendar(listArray,LocalDateTime.now().plusDays(5), LocalDateTime.now().plusDays(100));
+       // Main.printMap(map);
+        System.out.println("----------Testing Output/Input Streams-----------");
+        System.out.println(listArray);
+        System.out.println("=============");
+        AbstractTaskList newlist = new ArrayTaskList();
+//    TaskIO.writeBinary(listArray, new File("Tank.txt"));
+   TaskIO.writeText(listArray, new File("Tank.json"));
+//        TaskIO.readBinary(newlist, new File("Tank.txt"));
+       // System.out.println(newlist);
+   TaskIO.readText(newlist, new File("Tank.json"));
+        System.out.println();
+        System.out.println("newList after import Gson");
+        System.out.println(newlist);
+        System.out.println("--Читаем из файла--");
+    //    System.out.println(newlist);
+
+
+        /*String ses1 = "doct";
+        String ses2="";
+        Main.writeBinary(ses1, new File("Tank.txt"));
+        Main.readBinary(ses2, new File("Tank.txt"));*/
+//        System.out.println(ses1);
+//        System.out.println(ses2);
+
+//
+
+    }
+    public static void printMap(Map<LocalDateTime, Set<Task>> map){
         for(Map.Entry<LocalDateTime, Set<Task>> entry : map.entrySet()) {
             LocalDateTime date = entry.getKey();
-            StringBuilder sb = new StringBuilder(date.toString()).append(":");
+            StringBuilder sb = new StringBuilder(date.toString()).append(": ");
             Set<Task> tasks = entry.getValue();
             for (Task t: tasks) {
-                sb.append(" ").append(t.getTitle());
+                sb.append(t.getTitle()).append(", ");
             }
-            System.out.println(sb);
+            System.out.println(sb.substring(0, sb.length()-2));
         }
+    }
 
+    public static void writeBinary(String text, File file) {
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file))) {
+            System.out.println("Начинаем работу врайтера....");
+            oos.writeUTF(text);
+            } catch (Exception ex) {
 
+            System.out.println(ex.getMessage());
+        }
+    }
+    public static void readBinary(String text, File file) {
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file))) {
+            System.out.println("Начинаем работу ридера....");
+            String s = ois.readUTF();
+            System.out.println("-----------");
+
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+            e.printStackTrace();
+
+        }
     }
 }
 

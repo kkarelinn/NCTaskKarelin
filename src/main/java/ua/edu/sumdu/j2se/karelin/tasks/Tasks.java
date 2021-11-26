@@ -2,15 +2,19 @@ package ua.edu.sumdu.j2se.karelin.tasks;
 
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 public class Tasks {
     public static Iterable<Task> incoming(Iterable<Task> tasks, LocalDateTime start, LocalDateTime end)
-            throws IllegalArgumentException {
+            throws IllegalArgumentException, CloneNotSupportedException {
         if (tasks == null || start == null || start.isAfter(end)) {
             throw new IllegalArgumentException("Wrong arguments");
         }
-        return new Iterable<>() {
+      //вариант с new ArrayList()
+       return StreamSupport.stream(tasks.spliterator(), false).filter((t) -> t.nextTimeAfter(start) != null &&
+               (t.nextTimeAfter(start).compareTo(end)) <= 0).collect(Collectors.toList());
+       /* return new Iterable<>() {
 
             @Override
             public String toString() {
@@ -34,13 +38,14 @@ public class Tasks {
             @Override
             public Iterator<Task> iterator() {
                 return StreamSupport.stream(tasks.spliterator(), false).filter((t) -> t.nextTimeAfter(start) != null &&
-                        (t.nextTimeAfter(start).compareTo(end)) <= 0).iterator();
+                        (t.nextTimeAfter(start).compareTo(end)) <= 0).collect(Collectors.toList()).iterator();
             }
-        };
+        };*/
     }
 
+
     public static SortedMap<LocalDateTime, Set<Task>> calendar(Iterable<Task> tasks, LocalDateTime start,
-                                                      LocalDateTime end) {
+                                                      LocalDateTime end) throws CloneNotSupportedException {
         if (tasks == null || start == null || start.isAfter(end)) {
             throw new IllegalArgumentException("Wrong arguments");
         }
@@ -51,8 +56,7 @@ public class Tasks {
         *   Если map.key (время) уже есть - добавляем к Set(map.value),
         *   если нет - создаем keq/value (момент/задача)
         * */
-        StreamSupport.stream(tasks.spliterator(), false).filter(t -> t.nextTimeAfter(start) != null &&
-                (t.nextTimeAfter(start).compareTo(end)) <= 0).forEach(t->{
+        incoming(tasks, start, end).forEach(t->{
             LocalDateTime nextTaskDate = t.nextTimeAfter(start);
             while (nextTaskDate != null && nextTaskDate.compareTo(end) <= 0) {
                 if ((map.containsKey(nextTaskDate)))  map.get(nextTaskDate).add(t);

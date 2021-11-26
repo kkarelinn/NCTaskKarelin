@@ -1,10 +1,8 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
+import java.io.Serializable;
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
-import java.time.temporal.TemporalAdjusters;
 import java.util.Objects;
 
 /**
@@ -14,7 +12,7 @@ import java.util.Objects;
  * @author Andrii Karelin
  * @version 1.0
  */
-public class Task implements Cloneable {
+public class Task implements Cloneable, Serializable {
 
     private String title;
     private LocalDateTime time;           //час виконання одиночної задачі
@@ -23,6 +21,7 @@ public class Task implements Cloneable {
     private int interval;
     private boolean isActive;
 
+    public Task(){}
     /**
      * Створення нового об'єкту одиночної задачі
      *
@@ -125,7 +124,7 @@ public class Task implements Cloneable {
         this.start = null;
         this.end = null;
         this.interval = 0;
-        this.time = LocalDateTime.from(time);
+        this.time = time;
 
     }
 
@@ -160,8 +159,8 @@ public class Task implements Cloneable {
             throw new IllegalArgumentException("Wrong arguments");
         }
         this.time = null;
-        this.start = LocalDateTime.from(start);
-        this.end = LocalDateTime.from(end);
+        this.start = start;
+        this.end = end;
         this.interval = interval;
     }
 
@@ -181,7 +180,7 @@ public class Task implements Cloneable {
      */
     public boolean isRepeated() {
         return (start != null && end != null && (start.compareTo(end) <= 0)
-                && ((Duration.between(start, end).getSeconds()) / interval) > 0);
+                && ((Duration.between(start, end).getSeconds()) ) > 0);         //zero
     }
 
     /**
