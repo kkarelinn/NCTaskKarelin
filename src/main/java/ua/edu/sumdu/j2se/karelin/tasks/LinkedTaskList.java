@@ -1,10 +1,11 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
-public class LinkedTaskList extends AbstractTaskList implements Iterable<Task>, Cloneable {
+public class LinkedTaskList extends AbstractTaskList implements Iterable<Task>, Cloneable, Serializable {
     private int sizeList;
     private Node headNode;
     private Node finalNode;

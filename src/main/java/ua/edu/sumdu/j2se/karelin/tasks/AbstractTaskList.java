@@ -1,11 +1,12 @@
 package ua.edu.sumdu.j2se.karelin.tasks;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.stream.Stream;
 
-public abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
+public abstract class AbstractTaskList implements Iterable<Task>, Cloneable, Serializable {
 
     public AbstractTaskList clone() throws CloneNotSupportedException {
         return (AbstractTaskList) super.clone();
@@ -30,7 +31,7 @@ public abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
      * @param to   - кінець інтервалу
      * @return - обьєкт ArrayTaskList зі масивом запланованих задач
      */
-    public final AbstractTaskList incoming(LocalDateTime from, LocalDateTime to) throws IllegalArgumentException {
+   /* public final AbstractTaskList incoming(LocalDateTime from, LocalDateTime to) throws IllegalArgumentException {
         if (from == null || from.isAfter(to) || this.size() == 0) {
             throw new IllegalArgumentException("Wrong arguments");
         }
@@ -41,15 +42,15 @@ public abstract class AbstractTaskList implements Iterable<Task>, Cloneable {
         this.getStream().filter((t) -> t.nextTimeAfter(from) != null &&
                 (t.nextTimeAfter(from).compareTo(to)) <= 0).forEach(Objects.requireNonNull(list)::add);
         // без Stream API
-     /*   for (int i = 0; i < size(); i++) {
+        for (int i = 0; i < size(); i++) {
             Task t = this.getTask(i);
             LocalDateTime timeRun = t.nextTimeAfter(from);      //шукаємо серед задач час виконання
             if ((timeRun != null) && (timeRun.isBefore(to))) {
                 list.add(t);
             }
-        }*/
+        }
         return list;
-    }
+    }*/
 
     public String toString() {
         Iterator<Task> it = iterator();
