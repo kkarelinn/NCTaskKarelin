@@ -2,6 +2,7 @@ package ua.edu.sumdu.j2se.karelin.tasks;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.sql.Array;
 import java.time.*;
 import java.time.temporal.TemporalAdjusters;
 import java.util.*;
@@ -108,7 +109,7 @@ public class Main {
         System.out.println("----------Testing Output/Input Streams-----------");
         System.out.println(listArray);
         System.out.println("=============");
-        AbstractTaskList newlist = new ArrayTaskList();
+        AbstractTaskList newlist = new LinkedTaskList();
 //    TaskIO.writeBinary(listArray, new File("Tank.txt"));
    TaskIO.writeText(listArray, new File("Tank.json"));
 //        TaskIO.readBinary(newlist, new File("Tank.txt"));

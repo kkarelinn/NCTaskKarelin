@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public class Task implements Cloneable, Serializable {
 
+    private static final long SERIAL_VERSION_UID = 1L;
+
     private String title;
     private LocalDateTime time;           //час виконання одиночної задачі
     private LocalDateTime start;          //початок інтервалу повторюваної задачі
