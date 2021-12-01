@@ -7,6 +7,7 @@ import java.util.Objects;
 import java.util.stream.Stream;
 
 public abstract class AbstractTaskList implements Iterable<Task>, Cloneable, Serializable {
+    private static final long serialVersionUID = 1L;
 
     public AbstractTaskList clone() throws CloneNotSupportedException {
         return (AbstractTaskList) super.clone();

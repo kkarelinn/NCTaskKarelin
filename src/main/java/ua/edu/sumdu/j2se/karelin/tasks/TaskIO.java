@@ -2,6 +2,7 @@ package ua.edu.sumdu.j2se.karelin.tasks;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 import com.google.gson.stream.JsonWriter;
 
 
@@ -10,10 +11,9 @@ import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 
 public class TaskIO {
@@ -106,13 +106,18 @@ public class TaskIO {
         if (tasks == null || out == null) {
             throw new IllegalArgumentException("Something wrong with arguments");
         }
+        Gson gson = new GsonBuilder()
+                .setPrettyPrinting()
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateAdapter())
+                .create();
 
-        List<Task> taskList = tasks.getStream().collect(Collectors.toList());
-         Gson gson = new GsonBuilder()
+        Task[] taskMass = tasks.getStream().toArray(Task[]::new);
+             /* Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
                 .registerTypeAdapter(tasks.getClass(), new ListAdapter())
-                .create();
-         gson.toJson(tasks, out);
+                .create();  */
+
+        gson.toJson(taskMass, out);
 
 //        System.out.println(gson.toJson(tasks));
     }
@@ -124,12 +129,13 @@ public class TaskIO {
         }
         Gson gson = new GsonBuilder()
                 .setPrettyPrinting()
-                .registerTypeAdapter(tasks.getClass(), new ListAdapter())
+                .registerTypeAdapter(LocalDateTime.class, new LocalDateAdapter())
                 .create();
-              gson.fromJson(in, tasks.getClass()).getStream().forEach(tasks::add);
 
+        Task[] mass= gson.fromJson(in, Task[].class);
+        Arrays.stream(mass).forEach(tasks::add);
 
-
+        System.out.println(tasks);
     }
 
     //пишем JSon в файл (Gson)
@@ -156,6 +162,30 @@ public class TaskIO {
             System.out.println(e.getMessage());
         }
     }
+
+
+    //Адаптер Gson for LocalDateTime для массива
+    static class LocalDateAdapter extends TypeAdapter<LocalDateTime> {
+        @Override
+        public void write(final JsonWriter jsonWriter, final LocalDateTime localDT) throws IOException {
+            if (localDT == null) {
+                jsonWriter.nullValue();
+            } else {
+                jsonWriter.value(localDT.toString());
+            }
+        }
+
+        @Override
+        public LocalDateTime read(final JsonReader jsonReader) throws IOException {
+            if (jsonReader.peek() == JsonToken.NULL) {
+                jsonReader.nextNull();
+                return null;
+            } else {
+                return LocalDateTime.parse(jsonReader.nextString());
+            }
+        }
+    }
+
 
     //Адаптер Gson для чтения кастом класса
     static class ListAdapter extends TypeAdapter<AbstractTaskList> {
@@ -232,12 +262,23 @@ public class TaskIO {
         }
     }
 
-    static class LocalDateTimeAdapter implements JsonSerializer<LocalDateTime> {
+    //--------------------------------
+
+    //-------------------------------
+    //Адаптер Gson для LocalDateTime для массива
+    static class LocalDateTimeAdapter implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
 
         public JsonElement serialize(LocalDateTime date, Type typeOfSrc, JsonSerializationContext context) {
-            return new JsonPrimitive(date.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME));
+            return new JsonPrimitive(date.toString());
+        }
+
+        public LocalDateTime deserialize(JsonElement json, Type type, JsonDeserializationContext jsonDeserializationContext)
+                throws JsonParseException {
+            return LocalDateTime.parse(json.getAsString());
         }
     }
+
+
 
 
 }

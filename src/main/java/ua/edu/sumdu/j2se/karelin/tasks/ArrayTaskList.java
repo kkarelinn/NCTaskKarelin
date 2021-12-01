@@ -6,6 +6,8 @@ import java.util.stream.Stream;
 
 public class ArrayTaskList extends AbstractTaskList implements Iterable<Task>, Cloneable, Serializable {
 
+    private static final long SERIAL_VERSION_UID = 1L;
+
     private Task[] taskMass = new Task[10]; //розмір масиву задач "за замовчуванням".
     private int sizeList;
 
