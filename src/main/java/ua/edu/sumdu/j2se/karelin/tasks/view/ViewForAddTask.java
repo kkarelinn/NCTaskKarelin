@@ -25,18 +25,18 @@ public class ViewForAddTask implements View {
         boolean hasInterval = ParseData.getBooFromLine();
 
         if (!hasInterval) {
-            System.out.print("Please, enter the start time of the task in format YYYY-MM-DD HH:MM:SS : ");
+            System.out.print("Please, enter the start time of the task in format YYYY-MM-DD HH:MM : ");
             LocalDateTime time = ParseData.getTimeFromLine();
             newTask = new Task(title, time);
         } else {
-            System.out.print("Please, enter the START of interval of the task in format YYYY-MM-DD HH:MM:SS : ");
+            System.out.print("Please, enter the START of interval of the task in format YYYY-MM-DD HH:MM : ");
             LocalDateTime start = ParseData.getTimeFromLine();
-            System.out.print("Please, enter the END of interval of the task in format YYYY-MM-DD HH:MM:SS : ");
+            System.out.print("Please, enter the END of interval of the task in format YYYY-MM-DD HH:MM : ");
             LocalDateTime end = ParseData.getTimeFromLine();
             int interval = ParseData.getIntFromLine(start, end);
             newTask = new Task(title, start, end, interval);
         }
-        System.out.print("The Task is active? (y/n)");
+        System.out.print("The Task is active? (y/n): ");
         boolean isActive = ParseData.getBooFromLine();
         newTask.setActive(isActive);
         ControllerForAddTask.addTask(list, newTask);

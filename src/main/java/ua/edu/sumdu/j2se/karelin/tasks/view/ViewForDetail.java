@@ -8,6 +8,7 @@ import ua.edu.sumdu.j2se.karelin.tasks.model.util.ParseData;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 public class ViewForDetail implements View {
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
@@ -20,9 +21,15 @@ public class ViewForDetail implements View {
         System.out.println("---------------------------");
         System.out.println("Detail information about task " + t.getTitle());
         System.out.println("Title: " + t.getTitle());
-        System.out.println("TIME to start: " + ((t.isRepeated())? " not set" : t.getTime()));
-        System.out.println("START time: " + ((t.isRepeated())? t.getStartTime() :" not set"));
-        System.out.println("END time: " + ((t.isRepeated())? t.getEndTime() :" not set"));
+        System.out.println("TIME to start: " + ((t.isRepeated())? " not set" : t.getTime().toLocalDate()
+                +" "+t.getTime().toLocalTime().truncatedTo(ChronoUnit.MINUTES)));
+
+        System.out.println("START time: " + ((t.isRepeated())? t.getStartTime().toLocalDate()
+                +" "+t.getStartTime().toLocalTime().truncatedTo(ChronoUnit.MINUTES) :" not set"));
+
+        System.out.println("END time: " + ((t.isRepeated())? t.getEndTime().toLocalDate()
+                +" "+t.getEndTime().toLocalTime().truncatedTo(ChronoUnit.MINUTES) :" not set"));
+
         System.out.println("time INTERVAL: " + ((t.isRepeated())? t.getRepeatInterval()/60+"min" :" not set"));
         System.out.println((t.isActive())? "task is ACTIVE" : "task is NOT ACTIVE");
         System.out.println("---------------------------");
@@ -51,13 +58,14 @@ public class ViewForDetail implements View {
                 }
             }
             case 2 : {
+                System.out.print("Enter new TIME to launch in format YYYY-MM-DD HH:MM : ");
                 t.setTime(ParseData.getTimeFromLine());
                 break;
             }
             case 3 : {
-                System.out.print("Enter START time in format YYYY-MM-DD HH:MM:SS : ");
+                System.out.print("Enter new START time in format YYYY-MM-DD HH:MM : ");
                 LocalDateTime start = ParseData.getTimeFromLine();
-                System.out.print("Enter END time in format YYYY-MM-DD HH:MM:SS : ");
+                System.out.print("Enter new END time in format YYYY-MM-DD HH:MM : ");
                 LocalDateTime end = ParseData.getTimeFromLine();
                 int interval = ParseData.getIntFromLine(start, end);
                 t.setTime(start, end, interval);

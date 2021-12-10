@@ -1,5 +1,6 @@
 package ua.edu.sumdu.j2se.karelin.tasks.model.util;
 
+import ua.edu.sumdu.j2se.karelin.tasks.controller.Controller;
 import ua.edu.sumdu.j2se.karelin.tasks.controller.ControllerForRemoveTask;
 import ua.edu.sumdu.j2se.karelin.tasks.model.AbstractTaskList;
 
@@ -11,14 +12,14 @@ import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
 public class ParseData {
-    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+    private static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     public static LocalDateTime getTimeFromLine(){
         while (true) {
             try {
                 return LocalDateTime.parse(br.readLine(), formatter);
-            } catch (IOException e) {
-                System.out.print("Wrong date time. Enter again:");
+            } catch (Exception e) {
+                System.out.print("Wrong date time. Enter again: ");
             }
         }
 
@@ -79,6 +80,7 @@ public class ParseData {
         }
     }
     public static int getListIdFromLine(AbstractTaskList list) {
+
         while (true) {
             try {
                 int index = Integer.parseInt(br.readLine());

@@ -12,9 +12,14 @@ public class ViewForRemove implements View{
     private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     @Override
     public int printInfo(AbstractTaskList list) {
+
         System.out.print("What task would you like to remove from list? Please, enter the number: ");
         int listIndex = ParseData.getListIdFromLine(list);
         ControllerForRemoveTask.removeTask(list, listIndex);
+        if (ControllerForRemoveTask.getListSize(list)==0){
+            System.out.println("Task list is empty now. Exit to MAIN MENU...");
+            return Controller.MAIN_MENU_ACTION;
+        }
         System.out.print("Would you like to remove one more task? (y/n): ");
         if (ParseData.getBooFromLine()) {
             printInfo(list);

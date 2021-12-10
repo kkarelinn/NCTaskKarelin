@@ -218,9 +218,9 @@ public class Task implements Cloneable, Serializable {
     public String toString() {
         return "{" +
                 "\"" + title + "\"" +
-                ", time: " + ((time != null) ? time.toLocalDate()+" "+time.toLocalTime().truncatedTo(ChronoUnit.SECONDS) : "-") +
-                ", start_T: " + ((start != null) ? start.toLocalDate()+" "+start.toLocalTime().truncatedTo(ChronoUnit.SECONDS) : "-") +
-                ", end_T: " + ((end != null) ? end.toLocalDate()+" "+end.toLocalTime().truncatedTo(ChronoUnit.SECONDS) : "-") +
+                ", time: " + ((time != null) ? time.toLocalDate()+" "+time.toLocalTime().truncatedTo(ChronoUnit.MINUTES) : "-") +
+                ", start_T: " + ((start != null) ? start.toLocalDate()+" "+start.toLocalTime().truncatedTo(ChronoUnit.MINUTES) : "-") +
+                ", end_T: " + ((end != null) ? end.toLocalDate()+" "+end.toLocalTime().truncatedTo(ChronoUnit.MINUTES) : "-") +
                 ", int(min): " + ((interval != 0) ? interval/60 : "-") +
                 ((isActive) ? ", ACTIVE," : ", no active,") + " isRep :" + isRepeated() +
                 '}';
