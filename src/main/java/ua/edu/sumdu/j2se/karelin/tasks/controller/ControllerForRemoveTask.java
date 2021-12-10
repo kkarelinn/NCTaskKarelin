@@ -1,7 +1,6 @@
 package ua.edu.sumdu.j2se.karelin.tasks.controller;
 
 import ua.edu.sumdu.j2se.karelin.tasks.model.AbstractTaskList;
-import ua.edu.sumdu.j2se.karelin.tasks.model.Task;
 import ua.edu.sumdu.j2se.karelin.tasks.view.View;
 
 public class ControllerForRemoveTask extends Controller{

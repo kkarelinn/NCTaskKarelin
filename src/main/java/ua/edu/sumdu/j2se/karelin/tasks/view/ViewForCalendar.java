@@ -4,7 +4,6 @@ import ua.edu.sumdu.j2se.karelin.tasks.controller.Controller;
 import ua.edu.sumdu.j2se.karelin.tasks.controller.ControllerForCalendar;
 import ua.edu.sumdu.j2se.karelin.tasks.model.AbstractTaskList;
 import ua.edu.sumdu.j2se.karelin.tasks.model.Task;
-import ua.edu.sumdu.j2se.karelin.tasks.model.Tasks;
 
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;

@@ -1,7 +1,5 @@
 package ua.edu.sumdu.j2se.karelin.tasks.model;
 
-import org.apache.log4j.Logger;
-
 import java.io.Serializable;
 import java.util.Iterator;
 import java.util.stream.Stream;
