@@ -26,9 +26,10 @@ public class ParseData {
     public static int getIntFromLine(LocalDateTime start, LocalDateTime end){
         while (true) {
             try {
-                int interval = Integer.parseInt(br.readLine());
+                System.out.print("Enter time INTERVAL in min : ");
+                int interval = Integer.parseInt(br.readLine())*60;
                 if (start.isBefore(end)
-                        && interval/60 <= (end.toEpochSecond(ZoneOffset.UTC) - start.toEpochSecond(ZoneOffset.UTC))){
+                        && interval <= (end.toEpochSecond(ZoneOffset.UTC) - start.toEpochSecond(ZoneOffset.UTC))){
                     return interval;
                 } else System.out.print("Wrong interval. Enter again: ");
 

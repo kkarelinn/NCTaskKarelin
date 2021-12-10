@@ -33,7 +33,6 @@ public class ViewForAddTask implements View {
             LocalDateTime start = ParseData.getTimeFromLine();
             System.out.print("Please, enter the END of interval of the task in format YYYY-MM-DD HH:MM:SS : ");
             LocalDateTime end = ParseData.getTimeFromLine();
-            System.out.print("Please, enter the time interval in seconds: ");
             int interval = ParseData.getIntFromLine(start, end);
             newTask = new Task(title, start, end, interval);
         }

@@ -23,7 +23,7 @@ public class ViewForDetail implements View {
         System.out.println("TIME to start: " + ((t.isRepeated())? " not set" : t.getTime()));
         System.out.println("START time: " + ((t.isRepeated())? t.getStartTime() :" not set"));
         System.out.println("END time: " + ((t.isRepeated())? t.getEndTime() :" not set"));
-        System.out.println("time INTERVAL: " + ((t.isRepeated())? t.getRepeatInterval()+"sec" :" not set"));
+        System.out.println("time INTERVAL: " + ((t.isRepeated())? t.getRepeatInterval()/60+"min" :" not set"));
         System.out.println((t.isActive())? "task is ACTIVE" : "task is NOT ACTIVE");
         System.out.println("---------------------------");
         System.out.print("Do you want to change current task? (y/n): ");
@@ -59,7 +59,6 @@ public class ViewForDetail implements View {
                 LocalDateTime start = ParseData.getTimeFromLine();
                 System.out.print("Enter END time in format YYYY-MM-DD HH:MM:SS : ");
                 LocalDateTime end = ParseData.getTimeFromLine();
-                System.out.print("Enter time INTERVAL in sec : ");
                 int interval = ParseData.getIntFromLine(start, end);
                 t.setTime(start, end, interval);
                 break;
