@@ -1,30 +1,44 @@
 package ua.edu.sumdu.j2se.karelin.tasks.view;
 
-import ua.edu.sumdu.j2se.karelin.tasks.controller.Controller;
-import ua.edu.sumdu.j2se.karelin.tasks.controller.ControllerForRemoveTask;
 import ua.edu.sumdu.j2se.karelin.tasks.model.AbstractTaskList;
-import ua.edu.sumdu.j2se.karelin.tasks.model.util.ParseData;
+import ua.edu.sumdu.j2se.karelin.tasks.model.Task;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Set;
 
-public class ViewForRemove implements View{
-    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+public class ViewForRemove implements View {
+
     @Override
     public int printInfo(AbstractTaskList list) {
-
         System.out.print("What task would you like to remove from list? Please, enter the number: ");
-        int listIndex = ParseData.getListIdFromLine(list);
-        ControllerForRemoveTask.removeTask(list, listIndex);
-        if (ControllerForRemoveTask.getListSize(list)==0){
-            System.out.println("Task list is empty now. Exit to MAIN MENU...");
-            return Controller.MAIN_MENU_ACTION;
-        }
-        System.out.print("Would you like to remove one more task? (y/n): ");
-        if (ParseData.getBooFromLine()) {
-            printInfo(list);
-        }
-        return Controller.MAIN_MENU_ACTION;
-
+        return ParseData.getActionFromLine(list.size());
     }
+
+    @Override
+    public void printCalendar(Map<LocalDateTime, Set<Task>> map) {
+    }
+
+    @Override
+    public Task getInfo(Task task) {
+        return null;
+    }
+
+
+    @Override
+    public int getInfo() {
+        return 0;
+    }
+
+    @Override
+    public boolean getAnswer() {
+        System.out.print("Would you like to remove one more task? (y/n): ");
+        return ParseData.getBooFromLine();
+    }
+
+    @Override
+    public void printMessage(String message) {
+        System.out.println(message);
+    }
+
 }

@@ -1,21 +1,23 @@
 package ua.edu.sumdu.j2se.karelin.tasks.view;
 
 import ua.edu.sumdu.j2se.karelin.tasks.model.AbstractTaskList;
+import ua.edu.sumdu.j2se.karelin.tasks.model.Task;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.time.LocalDateTime;
+import java.util.Map;
+import java.util.Set;
 
-public class MainView implements View{
+public class MainView implements View {
     boolean start = true;
-    private static final BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
     @Override
     public int printInfo(AbstractTaskList list) {
 
         System.out.println();
-        if (start){ System.out.println("-----It's your \"TASK'S CALENDAR\"----\n");
-        start = false;}
+        if (start) {
+            System.out.println("-----It's your \"TASK'S CALENDAR\"----\n");
+            start = false;
+        }
 
         if (list.size() > 0) {
             System.out.println("You have SOME TASKS in you calendar. What would you like to do?");
@@ -30,20 +32,32 @@ public class MainView implements View{
         System.out.println("6. EXIT program\n");
         System.out.print("Please enter your choice (number): ");
         int choose = 0;
-        while(true) {
-            try {
-                choose = Integer.parseInt(br.readLine());
-                if (choose > 0 && choose < 7){
-                    return choose;
-                }
-                System.out.print("Please enter VALID choice (number): ");
-
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            catch (Exception e)
-            { System.out.print("Please enter VALID choice (number): ");}
-
-        }
+        choose = ParseData.getActionFromLine(6);
+        return choose;
     }
+
+    @Override
+    public void printCalendar(Map<LocalDateTime, Set<Task>> map) {
+    }
+
+    @Override
+    public Task getInfo(Task task) {
+        return null;
+    }
+
+    @Override
+    public int getInfo() {
+        return -1;
+    }
+
+    @Override
+    public boolean getAnswer() {
+        return false;
+    }
+
+    @Override
+    public void printMessage(String message) {
+    }
+
+
 }

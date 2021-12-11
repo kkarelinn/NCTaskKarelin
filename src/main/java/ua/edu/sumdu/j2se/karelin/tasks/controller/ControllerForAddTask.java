@@ -4,18 +4,20 @@ import ua.edu.sumdu.j2se.karelin.tasks.model.AbstractTaskList;
 import ua.edu.sumdu.j2se.karelin.tasks.model.Task;
 import ua.edu.sumdu.j2se.karelin.tasks.view.View;
 
-public class ControllerForAddTask extends Controller{
+public class ControllerForAddTask extends Controller {
     public ControllerForAddTask(View view, int actionToPerform) {
         super(view, actionToPerform);
     }
 
     @Override
-    public int process(AbstractTaskList taskList) {
-
-        return super.process(taskList);
+    public int action(AbstractTaskList taskList) {
+        while (true) {
+            Task t = view.getInfo(null);
+            if (t != null) taskList.add(t);
+            if (!view.getAnswer()) break;
+        }
+        return MAIN_MENU_ACTION;
     }
 
-    public static void addTask(AbstractTaskList list, Task task){
-        list.add(task);
-    }
+
 }

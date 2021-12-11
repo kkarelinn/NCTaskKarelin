@@ -1,8 +1,4 @@
-package ua.edu.sumdu.j2se.karelin.tasks.model.util;
-
-import ua.edu.sumdu.j2se.karelin.tasks.controller.Controller;
-import ua.edu.sumdu.j2se.karelin.tasks.controller.ControllerForRemoveTask;
-import ua.edu.sumdu.j2se.karelin.tasks.model.AbstractTaskList;
+package ua.edu.sumdu.j2se.karelin.tasks.view;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -24,7 +20,7 @@ public class ParseData {
         }
 
     }
-    public static int getIntFromLine(LocalDateTime start, LocalDateTime end){
+    public static int getIntervalFromLine(LocalDateTime start, LocalDateTime end){
         while (true) {
             try {
                 System.out.print("Enter time INTERVAL in min : ");
@@ -39,7 +35,7 @@ public class ParseData {
             }
         }
     }
-    public static int getIntFromLine(){
+    public static int getIntervalFromLine(){
         while (true) {
             try {
                 int interval = Integer.parseInt(br.readLine());
@@ -79,36 +75,18 @@ public class ParseData {
             }
         }
     }
-    public static int getListIdFromLine(AbstractTaskList list) {
-
+       public static int getActionFromLine(int size) {
         while (true) {
             try {
                 int index = Integer.parseInt(br.readLine());
-                if (index > 0 && index <= ControllerForRemoveTask.getListSize(list)) {
-                   return index-1;
-                } else {
-                    System.out.print("You have no such number of task. Please, try again: ");
-
-                }
-            } catch (Exception e) {
-                System.out.print("PLease, enter correct number of task: ");
-            }
-        }
-
-    }
-
-    public static int getActionFromLine() {
-        while (true) {
-            try {
-                int index = Integer.parseInt(br.readLine());
-                if (index > 0 && index <= 4) {
+                if (index > 0 && index <= size) {
                    return index;
                 } else {
-                    System.out.print("You have make right choice. Please, try again: ");
+                    System.out.print("Wrong choice. Please, try again: ");
 
                 }
             } catch (Exception e) {
-                System.out.print("You have make right choice. Please, try again: ");
+                System.out.print("Wrong choice. Please, try again: ");
             }
         }
     }

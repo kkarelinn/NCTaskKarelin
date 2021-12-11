@@ -1,7 +1,7 @@
 package ua.edu.sumdu.j2se.karelin.tasks.model;
 
 import org.apache.log4j.Logger;
-import ua.edu.sumdu.j2se.karelin.tasks.view.observer.ObserverForChange;
+import ua.edu.sumdu.j2se.karelin.tasks.controller.observer.ObserverForChange;
 
 import java.io.Serializable;
 import java.util.Iterator;
